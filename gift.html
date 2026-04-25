@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="uk" style="color-scheme: light dark;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>🎁 Для Вітольда</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🎁</text></svg>">
+  <meta property="og:title"       content="🎁 Тут щось є для тебе…">
+  <meta property="og:description" content="Відкрий і дізнаєшся від кого і що.">
+  <meta property="og:type"        content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ══ TOKENS ══════════════════════════════ */
+    :root {
+      --terra:      #CF6B4A;
+      --terra-h:    #DC7A58;
+      --terra-glow: rgba(207,107,74,.36);
+      --bg:         #FFF5EE;
+      --surface:    #FFFFFF;
+      --surface-2:  #FFF0EA;
+      --border:     #EDCFC4;
+      --text-h:     #1C1410;
+      --text-b:     #6B4E42;
+      --text-m:     #9C7B6E;
+      --text-lnk:   #CF6B4A;
+      --wrong-bg:   #FFF2F2;
+      --wrong-bdr:  #F08080;
+      --ok:         #2E9E60;
+      --shadow:     0 20px 56px rgba(207,107,74,.34);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:        #161110;
+        --surface:   #241A17;
+        --surface-2: #2D1F1A;
+        --border:    #3E2920;
+        --text-h:    #F5EDE8;
+        --text-b:    #C4A090;
+        --text-m:    #8A6A5E;
+        --text-lnk:  #E88060;
+        --wrong-bg:  #2D1A1A;
+        --wrong-bdr: #A04040;
+        --ok:        #4DBF7F;
+        --shadow:    0 20px 56px rgba(0,0,0,.55);
+      }
+    }
+
+    /* ══ RESET ═══════════════════════════════ */
+    *, *::before, *::after {
+      margin:0; padding:0; box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+    html { background:var(--bg); }
+    body {
+      font-family:'Nunito',-apple-system,sans-serif;
+      background:var(--bg); color:var(--text-h);
+      min-height:100dvh; overflow-x:hidden;
+      user-select:none; -webkit-font-smoothing:antialiased;
+    }
+    .hidden { display:none !important; }
+
+    /* ══ SCREENS ══════════════════════════════ */
+    .screen {
+      display:none; min-height:100dvh; width:100%;
+      padding:40px 22px max(48px,env(safe-area-inset-bottom));
+      flex-direction:column; align-items:center;
+      justify-content:center; text-align:center;
+    }
+    .screen.active { display:flex; animation:fadeUp .42s cubic-bezier(.22,1,.36,1) both; }
+    @keyframes fadeUp {
+      from{opacity:0;transform:translateY(18px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    /* ══ GIFT CARD ════════════════════════════ */
+    .gift-card {
+      width:min(300px,84vw); aspect-ratio:1.586;
+      background:var(--terra); border-radius:20px;
+      display:flex; flex-direction:column; align-items:center;
+      justify-content:center; gap:10px; margin-bottom:28px;
+      position:relative; overflow:hidden;
+      box-shadow:var(--shadow); flex-shrink:0;
+    }
+    .gift-card::before {
+      content:''; position:absolute; inset:0;
+      background:repeating-linear-gradient(-45deg,
+        rgba(255,255,255,.05) 0px,rgba(255,255,255,.05) 1px,
+        transparent 1px,transparent 18px);
+    }
+    .gift-card::after {
+      content:''; position:absolute; width:70%; height:95%;
+      top:-28%; right:-20%; border:1.5px solid rgba(255,255,255,.14);
+      border-radius:50%; transform:rotate(20deg);
+    }
+    .gift-card svg { position:relative; z-index:1; }
+
+    /* ══ TYPOGRAPHY ════════════════════════════ */
+    h1 {
+      font-family:'Unbounded',sans-serif;
+      font-size:clamp(18px,5vw,25px); font-weight:900;
+      line-height:1.25; color:var(--text-h); margin-bottom:12px;
+    }
+    h2 {
+      font-family:'Unbounded',sans-serif;
+      font-size:clamp(14px,4vw,20px); font-weight:700;
+      color:var(--text-h); line-height:1.3; margin-bottom:14px;
+    }
+    p {
+      font-size:clamp(14px,3.6vw,16px); font-weight:600;
+      line-height:1.65; color:var(--text-b); max-width:360px;
+    }
+    strong { color:var(--text-h); }
+
+    /* ══ BUTTONS ══════════════════════════════ */
+    .btn {
+      display:inline-block; background:var(--terra); color:#fff;
+      border:none; border-radius:50px; padding:16px 32px;
+      font-family:'Unbounded',sans-serif;
+      font-size:clamp(12px,3.2vw,14px); font-weight:700;
+      cursor:pointer; line-height:1.45; letter-spacing:.01em;
+      box-shadow:0 6px 22px var(--terra-glow); margin-top:22px;
+      transition:background .15s,transform .12s,box-shadow .15s;
+      -webkit-font-smoothing:antialiased;
+    }
+    .btn:hover  { background:var(--terra-h); }
+    .btn:active { transform:scale(.96); }
+
+    .btn-ghost {
+      display:inline-block; background:transparent;
+      color:var(--terra); border:2.5px solid var(--terra);
+      border-radius:50px; padding:14px 28px;
+      font-family:'Unbounded',sans-serif;
+      font-size:clamp(12px,3.2vw,14px); font-weight:700;
+      cursor:pointer; line-height:1.45; margin-top:12px;
+      transition:background .15s,transform .12s;
+    }
+    .btn-ghost:active { transform:scale(.96); }
+
+    /* ══ SCREEN 0 — NAME ══════════════════════ */
+    #screen-name .name-card {
+      background:var(--surface); border:2px solid var(--border);
+      border-radius:20px; padding:32px 24px; max-width:360px; width:100%;
+    }
+    .name-emoji { font-size:48px; margin-bottom:16px; display:block; }
+    .name-input {
+      width:100%; padding:14px 18px; margin-top:20px;
+      background:var(--surface-2); border:2px solid var(--border);
+      border-radius:12px; font-family:'Nunito',sans-serif;
+      font-size:16px; font-weight:700; color:var(--text-h);
+      outline:none; transition:border-color .18s; -webkit-appearance:none;
+    }
+    .name-input:focus { border-color:var(--terra); }
+    .name-input::placeholder { color:var(--text-m); font-weight:600; }
+    .name-error {
+      font-size:13px; font-weight:700; color:#E05050;
+      margin-top:10px; min-height:18px;
+    }
+
+    /* ══ SCREEN 1 — WELCOME ════════════════════ */
+    .timer-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      background:var(--surface); border:1.5px solid var(--border);
+      border-radius:50px; padding:7px 16px; margin-bottom:22px;
+      font-family:'Unbounded',sans-serif; font-size:11px;
+      color:var(--text-m); flex-shrink:0;
+      transition:color .3s,border-color .3s;
+    }
+    .timer-pill.urgent { color:#E05050; border-color:#E05050; animation:blink .5s ease infinite alternate; }
+    @keyframes blink { from{opacity:1} to{opacity:.5} }
+
+    /* ══ SCREEN 2 — ESCAPE ════════════════════
+       Кнопка (z:200) ховається під час фази choice.
+       Лічильник і блок вибору (z:210) завжди поверх.
+    ══════════════════════════════════════════ */
+    #btn-escape {
+      position:fixed; z-index:200; margin-top:0; white-space:nowrap;
+      transition:left .26s cubic-bezier(.175,.885,.32,1.35),
+                 top  .26s cubic-bezier(.175,.885,.32,1.35),
+                 opacity .22s ease;
+    }
+
+    .esc-top {
+      position:relative; z-index:210; pointer-events:none;
+      display:flex; flex-direction:column; align-items:center; gap:6px;
+      margin-bottom:16px;
+    }
+    .esc-counter {
+      font-family:'Unbounded',sans-serif;
+      font-size:clamp(15px,4vw,20px); font-weight:900; color:var(--text-h);
+    }
+    .esc-milestone {
+      font-size:clamp(12px,3vw,14px); font-weight:700;
+      color:var(--text-m); min-height:20px; animation:fadeUp .35s ease;
+    }
+
+    .esc-hint {
+      position:relative; z-index:210;
+      font-size:clamp(12px,3vw,14px); font-weight:600; color:var(--text-m);
+    }
+
+    /* вибір — z:210, непрозорий фон, тому кнопка під ним */
+    .esc-choice {
+      position:relative; z-index:210;
+      display:flex; flex-direction:column; align-items:center;
+      max-width:320px; width:100%;
+      background:var(--bg);
+      border-radius:20px; padding:20px 16px 8px;
+      animation:fadeUp .45s cubic-bezier(.22,1,.36,1);
+    }
+    .esc-choice p { margin-bottom:0; font-size:clamp(13px,3.4vw,15px); }
+
+    /* ══ SCREEN 3 — QUIZ ══════════════════════ */
+    .quiz-wrap { width:100%; max-width:390px; }
+    .quiz-options { display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+
+    .quiz-opt {
+      background:var(--surface); border:2px solid var(--border);
+      border-radius:14px; padding:15px 18px;
+      font-family:'Nunito',sans-serif;
+      font-size:clamp(14px,3.6vw,16px); font-weight:800; color:var(--text-h);
+      cursor:pointer; display:flex; align-items:center; gap:13px; text-align:left;
+      transition:border-color .18s,background .18s;
+    }
+    .quiz-opt:not(.wrong):hover { border-color:var(--terra); background:var(--surface-2); }
+    .quiz-opt.wrong {
+      background:var(--wrong-bg); border-color:var(--wrong-bdr); pointer-events:none;
+    }
+    .quiz-opt .opt-icon { font-size:20px; min-width:26px; flex-shrink:0; }
+    .opt-label { display:flex; flex-direction:column; gap:3px; }
+    .opt-comment {
+      font-size:11px; font-weight:600; color:var(--text-m);
+      animation:fadeUp .3s ease;
+    }
+
+    @keyframes shake {
+      0%,100%{transform:translateX(0) rotate(0deg);}
+      10%{transform:translateX(-10px) rotate(-2deg);}
+      25%{transform:translateX(10px) rotate(2deg);}
+      40%{transform:translateX(-7px) rotate(-1.5deg);}
+      55%{transform:translateX(7px) rotate(1.5deg);}
+      70%{transform:translateX(-4px);}
+      85%{transform:translateX(4px);}
+    }
+    .do-shake { animation:shake .52s ease; }
+
+    /* ══ FINAL BOX ════════════════════════════ */
+    .final-box {
+      display:none; background:var(--surface);
+      border:2px solid var(--border); border-radius:20px;
+      padding:26px 20px 22px; width:100%; text-align:center;
+      animation:fadeUp .45s cubic-bezier(.22,1,.36,1) both;
+    }
+    .final-box p { font-size:clamp(13px,3.4vw,15px); margin-bottom:10px; }
+    .divider { height:1px; background:var(--border); margin:16px 0; }
+
+    /* ── ЛІРИКА → перекреслення → основна фраза ── */
+    .lyric-block { margin-bottom:0; }
+
+    /* суржик — курсив, мʼяко приглушений */
+    .lyric-text {
+      font-family:'Unbounded',sans-serif;
+      font-size:clamp(11px,2.8vw,13px); font-weight:700;
+      font-style:italic; color:var(--text-m);
+      line-height:1.7; display:block;
+      min-height:2.4em; /* резервуємо місце поки друкується */
+    }
+
+    /* курсор друкування */
+    .lyric-cursor {
+      display:inline-block; width:2px; height:1.1em;
+      background:var(--terra); vertical-align:middle;
+      margin-left:2px; animation:cursorBlink .6s step-end infinite;
+    }
+    @keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .lyric-cursor.gone { display:none; }
+
+    /* перекреслення через text-decoration-color transition */
+    .lyric-text {
+      text-decoration: line-through;
+      text-decoration-color: transparent;
+      transition: text-decoration-color .7s ease;
+    }
+    .lyric-text.strike { text-decoration-color: #E05050; }
+
+    /* основна фраза */
+    .main-phrase {
+      font-family:'Unbounded',sans-serif;
+      font-size:clamp(14px,3.8vw,18px); font-weight:900;
+      color:var(--text-h); line-height:1.3; margin-top:14px;
+      opacity:0; transform:translateY(10px);
+      transition:opacity .55s ease,transform .55s ease;
+    }
+    .main-phrase.show { opacity:1; transform:translateY(0); }
+
+    /* нижня частина фіналу — ховається до появи основної фрази */
+    .final-reveal {
+      opacity:0; transform:translateY(10px);
+      transition:opacity .55s ease .2s, transform .55s ease .2s;
+    }
+    .final-reveal.show { opacity:1; transform:translateY(0); }
+
+    /* лінка */
+    .link-box {
+      background:var(--surface-2); border:2px dashed var(--terra);
+      border-radius:12px; padding:14px 15px; display:flex;
+      align-items:center; gap:10px; cursor:pointer; text-align:left;
+      margin:14px 0 7px;
+      transition:background .18s,transform .1s,border-color .2s;
+    }
+    .link-box:active { transform:scale(.98); }
+    @media(hover:hover){ .link-box:hover { background:var(--border); } }
+    .link-icon { font-size:18px; flex-shrink:0; }
+    .link-text {
+      font-family:'Unbounded',sans-serif;
+      font-size:clamp(9px,2.4vw,11px); color:var(--text-lnk);
+      word-break:break-all; flex:1; line-height:1.5;
+    }
+    .copy-hint { font-size:12px; font-weight:600; color:var(--text-m); }
+    .copy-ok   { color:var(--ok); }
+
+    /* фінальна картка */
+    .final-card-wrap {
+      margin-top:26px; opacity:0;
+      transform:scale(.65) rotate(-7deg) translateY(24px);
+      transition:opacity .6s cubic-bezier(.22,1,.36,1),
+                 transform .6s cubic-bezier(.22,1,.36,1);
+    }
+    .final-card-wrap.pop { opacity:1; transform:scale(1) rotate(0deg) translateY(0); }
+    .final-card-sm {
+      width:min(280px,80vw); aspect-ratio:1.586; background:var(--terra);
+      border-radius:18px; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:9px;
+      position:relative; overflow:hidden; box-shadow:var(--shadow); margin:0 auto;
+    }
+    .final-card-sm::before {
+      content:''; position:absolute; inset:0;
+      background:repeating-linear-gradient(-45deg,
+        rgba(255,255,255,.05) 0px,rgba(255,255,255,.05) 1px,
+        transparent 1px,transparent 18px);
+    }
+    .final-card-sm::after {
+      content:''; position:absolute; width:70%; height:95%;
+      top:-28%; right:-20%; border:1.5px solid rgba(255,255,255,.14);
+      border-radius:50%; transform:rotate(20deg);
+    }
+    .final-card-sm svg,.fc-label { position:relative; z-index:1; }
+    .fc-label {
+      font-family:'Unbounded',sans-serif; font-size:clamp(9px,2.4vw,12px);
+      font-weight:700; color:rgba(255,255,255,.92); letter-spacing:.04em;
+    }
+
+    /* ══ MODALS ═══════════════════════════════ */
+    .modal-bg {
+      position:fixed; inset:0; background:rgba(0,0,0,.52);
+      display:flex; align-items:center; justify-content:center;
+      z-index:300; padding:20px; animation:fadeIn .25s ease;
+    }
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal-box {
+      background:var(--surface); border-radius:22px;
+      padding:34px 26px 28px; max-width:320px; width:100%;
+      text-align:center; animation:fadeUp .35s cubic-bezier(.22,1,.36,1);
+    }
+    .modal-emoji { font-size:52px; margin-bottom:14px; display:block; }
+    .modal-box h2 { font-size:clamp(15px,4vw,20px); margin-bottom:10px; }
+    .modal-box p  { font-size:clamp(13px,3.4vw,15px); }
+    .modal-sub {
+      font-family:'Unbounded',sans-serif;
+      font-size:13px; color:var(--terra); margin-top:10px; font-weight:700;
+    }
+
+    /* ══ CONFETTI ════════════════════════════ */
+    #confetti { position:fixed; inset:0; pointer-events:none; z-index:250; overflow:hidden; }
+    .cp { position:absolute; animation:cffall linear forwards; }
+    @keyframes cffall {
+      0%{transform:translateY(-30px) rotate(0deg);opacity:1;}
+      80%{opacity:1;}
+      100%{transform:translateY(110vh) rotate(900deg);opacity:0;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ SCREEN 0 — ІМʼЯ ═══════════ -->
+<div class="screen active" id="screen-name">
+  <div class="name-card">
+    <span class="name-emoji">🎁</span>
+    <h2>Стапе!!!</h2>
+    <p>Перш ніж відкрити подарунок — підтверди, що ти Віталік.</p>
+    <input class="name-input" id="name-input" type="text"
+      placeholder="Введи своє ім'я…"
+      autocomplete="off" autocorrect="off" spellcheck="false"
+      onkeydown="if(event.key==='Enter')checkName()">
+    <div class="name-error" id="name-error"></div>
+    <button class="btn" onclick="checkName()">Підтвердити →</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN 1 — ВІТАННЯ ═══════════ -->
+<div class="screen" id="screen-welcome">
+  <div class="timer-pill" id="timer-pill">
+    ⏳ Подарунок зникне через&nbsp;<span id="timer-val">1:00</span>
+  </div>
+  <div class="gift-card">
+    <svg width="72" height="72" viewBox="0 0 80 80" fill="none" style="position:relative;z-index:1">
+      <rect x="11" y="36" width="58" height="37" rx="2" fill="white"/>
+      <rect x="7"  y="26" width="66" height="13" rx="2" fill="white"/>
+      <rect x="37" y="26" width="6"  height="47" fill="#CF6B4A" opacity="0.28"/>
+      <rect x="7"  y="35" width="66" height="7"  fill="#CF6B4A" opacity="0.28"/>
+      <path d="M40 26 C34 15,17 13,20 22 C22 30,38 27,40 26Z" fill="white" stroke="#222" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M40 26 C46 15,63 13,60 22 C58 30,42 27,40 26Z" fill="white" stroke="#222" stroke-width="1.8" stroke-linejoin="round"/>
+      <rect x="11" y="36" width="58" height="37" rx="2" stroke="#222" stroke-width="2" fill="none"/>
+      <rect x="7"  y="26" width="66" height="13" rx="2" stroke="#222" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+  <h1>Дорогий Віталік, Вітос&#8209;батос,&nbsp;Вітольд&nbsp;🎉</h1>
+  <p>Пацантре (Андре, ВлаDICK, Дауніл, Алєх) вітають тебе з твоїм <strong>33-річчям!</strong><br>Тут є щось для тебе — забирай!</p>
+  <button class="btn" onclick="startEscape()">🎁 Клікни, щоб забрати</button>
+</div>
+
+<!-- ═══════════ SCREEN 2 — ВТІКАЮЧА КНОПКА ═══════════ -->
+<div class="screen" id="screen-escape">
+  <div class="esc-top">
+    <div class="esc-counter hidden" id="esc-counter">🏃 0 / 33</div>
+    <div class="esc-milestone hidden" id="esc-milestone"></div>
+  </div>
+  <p class="esc-hint hidden" id="esc-hint">ну давай, натисни…</p>
+  <div class="esc-choice hidden" id="esc-choice">
+    <p>5 кліків. Непогано.<br>Будеш тикати далі до&nbsp;33?</p>
+    <button class="btn" onclick="escapeEasy()">😅 Ні, хочу подарунок!</button>
+    <button class="btn-ghost" onclick="escapeBait()">💪 Дожму до 33!</button>
+  </div>
+</div>
+
+<!-- кнопка поза .screen, z:200 -->
+<button class="btn hidden" id="btn-escape" onclick="escapeClick()">
+  🎁 Клікни, щоб забрати
+</button>
+
+<!-- ═══════════ SCREEN 3 — КВІЗ ═══════════ -->
+<div class="screen" id="screen-quiz">
+  <div class="quiz-wrap">
+    <div id="quiz-q">
+      <h2>🤔 Одне важливе питання</h2>
+      <p>У кого пісюн довше?</p>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="quizClick(this,'oleg')">
+          <span class="opt-icon">🤷</span>
+          <span class="opt-label"><span>Олег</span></span>
+        </button>
+        <button class="quiz-opt" onclick="quizClick(this,'vlad')">
+          <span class="opt-icon">🤷</span>
+          <span class="opt-label"><span>Влад</span></span>
+        </button>
+        <button class="quiz-opt" onclick="quizClick(this,'danya')">
+          <span class="opt-icon">🤷</span>
+          <span class="opt-label"><span>Даня</span></span>
+        </button>
+        <button class="quiz-opt" onclick="quizClick(this,'andriy')">
+          <span class="opt-icon">🤷</span>
+          <span class="opt-label"><span>Андрій</span></span>
+        </button>
+        <button class="quiz-opt" onclick="quizClick(this,'vitalik')">
+          <span class="opt-icon">🤷</span>
+          <span class="opt-label"><span>Віталік</span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ФІНАЛ -->
+    <div class="final-box" id="final-box">
+      <!-- лірика + основна фраза -->
+      <div class="lyric-block">
+        <span class="lyric-text" id="lyric-text"><span class="lyric-cursor" id="lyric-cursor"></span></span>
+        <div class="main-phrase" id="main-phrase">
+          Довжина не важлива&nbsp;—<br>важливо вміння користуватись!&nbsp;😏
+        </div>
+      </div>
+
+      <div class="final-reveal" id="final-reveal">
+      <div class="divider"></div>
+      <p>Тому вміло застосовуй токени, щоб не вилазив у ліміти при творінні чогось крутого. Ми віримо, у тебе все вийде! <3</p>
+      <div class="divider"></div>
+      <p><strong>Тримай свою підписку на Клод від пацанів:</strong></p>
+
+      <div class="link-box" onclick="copyLink()" id="link-box">
+        <span class="link-icon">🔗</span>
+        <span class="link-text" id="link-text">https://claude.ai/gift/redeem?code=76b579b3-9724-413a-8472-fe321c205582</span>
+      </div>
+      <div class="copy-hint" id="copy-hint">тицяй, щоб скопіювати</div>
+
+      <div class="final-card-wrap" id="final-card-wrap">
+        <div class="final-card-sm">
+          <svg width="54" height="54" viewBox="0 0 80 80" fill="none" style="position:relative;z-index:1">
+            <rect x="11" y="36" width="58" height="37" rx="2" fill="white"/>
+            <rect x="7"  y="26" width="66" height="13" rx="2" fill="white"/>
+            <rect x="37" y="26" width="6"  height="47" fill="#CF6B4A" opacity="0.28"/>
+            <rect x="7"  y="35" width="66" height="7"  fill="#CF6B4A" opacity="0.28"/>
+            <path d="M40 26 C34 15,17 13,20 22 C22 30,38 27,40 26Z" fill="white" stroke="#222" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M40 26 C46 15,63 13,60 22 C58 30,42 27,40 26Z" fill="white" stroke="#222" stroke-width="1.8" stroke-linejoin="round"/>
+            <rect x="11" y="36" width="58" height="37" rx="2" stroke="#222" stroke-width="2" fill="none"/>
+            <rect x="7"  y="26" width="66" height="13" rx="2" stroke="#222" stroke-width="2" fill="none"/>
+          </svg>
+          <div class="fc-label">1 year of Claude Pro</div>
+        </div>
+      </div>
+      </div><!-- /final-reveal -->
+    </div>
+  </div>
+</div>
+
+<!-- МОДАЛКА — таймер -->
+<div class="modal-bg hidden" id="timer-modal">
+  <div class="modal-box">
+    <span class="modal-emoji">⏰</span>
+    <h2>Час вийшов!</h2>
+    <p>Але… ладно, тримай ще одну хвилинку&nbsp;😏</p>
+    <button class="btn" onclick="resetTimer()">Окей!</button>
+  </div>
+</div>
+
+<!-- МОДАЛКА — 33 кліки -->
+<div class="modal-bg hidden" id="achieve-modal">
+  <div class="modal-box">
+    <span class="modal-emoji">🏆</span>
+    <h2>33 / 33</h2>
+    <h2 style="font-size:clamp(18px,5vw,26px);margin-top:4px;">ТИ ДОЖАВ!!</h2>
+    <p style="margin-top:10px;">…і що ж там такого особливого?</p>
+    <div class="modal-sub" id="achieve-cd">переходимо за 3…</div>
+  </div>
+</div>
+
+<div id="confetti"></div>
+
+<script>
+/* ══ SOUNDS ══════════════════════════════════ */
+let _ctx=null;
+function ac(){if(!_ctx)_ctx=new(window.AudioContext||window.webkitAudioContext)();return _ctx;}
+function tone(freq,type,dur,vol,delay){
+  try{
+    const c=ac(),o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);
+    o.type=type;o.frequency.value=freq;
+    const t=c.currentTime+(delay||0);
+    g.gain.setValueAtTime(vol,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    o.start(t);o.stop(t+dur);
+  }catch(e){}
+}
+function sBoing(){tone(520,'sine',.08,.28);tone(210,'sine',.22,.18,.06);}
+function sBuzz() {tone(130,'sawtooth',.18,.1);}
+function sDing() {tone(880,'sine',.35,.18);tone(1108,'sine',.35,.18,.1);}
+function sFanfare(){
+  [[523,0],[659,.1],[784,.2],[1047,.34],[1047,.48],[784,.58]].forEach(([f,d])=>
+    tone(f,'triangle',.38,.2,d));
+}
+function sBig(){
+  [[523,0],[659,.08],[784,.16],[1047,.26],[1319,.38],[1047,.5],[1319,.62]].forEach(([f,d])=>
+    tone(f,'triangle',.45,.22,d));
+}
+
+/* ══ NAME CHECK ══════════════════════════════ */
+let nameAttempts=0;
+function checkName(){
+  const val=(document.getElementById('name-input').value||'').trim().toLowerCase();
+  const err=document.getElementById('name-error');
+  const ok=['вітольд','vitold','вітальд','витольд'].includes(val);
+  if(ok){sDing();err.textContent='';setTimeout(()=>{stopTimer();showScreen('screen-welcome');startTimer();},300);return;}
+  nameAttempts++;sBuzz();
+  if(nameAttempts>=2){
+    err.textContent='😒 Ок, вір тобі на слово. Заходь.';
+    setTimeout(()=>{stopTimer();showScreen('screen-welcome');startTimer();},1200);return;
+  }
+  err.textContent='🤨 Хм… не схоже на Вітольда. Спробуй ще.';
+}
+
+/* ══ TIMER ═══════════════════════════════════ */
+let timerSec=60,timerInterval=null;
+function startTimer(){timerSec=60;renderTimer();timerInterval=setInterval(()=>{timerSec--;renderTimer();if(timerSec<=0){clearInterval(timerInterval);document.getElementById('timer-modal').classList.remove('hidden');}},1000);}
+function stopTimer(){clearInterval(timerInterval);}
+function resetTimer(){document.getElementById('timer-modal').classList.add('hidden');document.getElementById('timer-pill').classList.remove('urgent');startTimer();}
+function renderTimer(){
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  document.getElementById('timer-val').textContent=m+':'+String(s).padStart(2,'0');
+  document.getElementById('timer-pill').classList.toggle('urgent',timerSec<=10);
+}
+
+/* ══ ESCAPE ══════════════════════════════════ */
+let escCount=0,escPhase='normal';
+const MAX_ESC=33;
+const MILESTONES={
+  5: '5 / 33 — і це лиш початок 👀',
+  10:'10 / 33 — ще навіть не половина 😅',
+  15:'15 / 33 — ти реально це робиш 😐',
+  20:'20 / 33 — а там точно щось є? 🤔',
+  25:'25 / 33 — впертий 🤘',
+  30:'30 / 33 — вже чути фінішну пряму!',
+  32:'32 / 33 — ОН ВЖЕ!!!',
+};
+
+function startEscape(){
+  stopTimer();
+  showScreen('screen-escape');
+  const btn=document.getElementById('btn-escape');
+  const hint=document.getElementById('esc-hint');
+  btn.classList.remove('hidden');
+  btn.style.opacity='1';
+  btn.style.pointerEvents='auto';
+  hint.classList.remove('hidden');
+  requestAnimationFrame(()=>{
+    const bw=btn.offsetWidth,bh=btn.offsetHeight;
+    btn.style.left=Math.round((window.innerWidth-bw)/2)+'px';
+    btn.style.top =Math.round((window.innerHeight-bh)/2)+'px';
+  });
+}
+
+function escapeClick(){
+  if(escPhase==='done'||escPhase==='choice') return;
+  escCount++;
+  sBoing();
+  if(escPhase==='bait') updateEscCounter();
+
+  if(escPhase==='normal'&&escCount>=5){
+    // ховаємо кнопку повністю під час показу вибору
+    escPhase='choice';
+    const btn=document.getElementById('btn-escape');
+    btn.style.opacity='0';
+    btn.style.pointerEvents='none';
+    document.getElementById('esc-hint').classList.add('hidden');
+    document.getElementById('esc-choice').classList.remove('hidden');
+    updateEscCounter();
+    sDing();
+    return;
+  }
+  if(escPhase==='bait'){
+    checkMilestone();
+    if(escCount>=MAX_ESC){achieveDone();return;}
+  }
+  moveEscBtn();
+}
+
+function escapeEasy(){
+  document.getElementById('btn-escape').classList.add('hidden');
+  showQuiz();
+}
+
+function escapeBait(){
+  escPhase='bait';
+  document.getElementById('esc-choice').classList.add('hidden');
+  const hint=document.getElementById('esc-hint');
+  hint.textContent='не кидай тепер…';
+  hint.classList.remove('hidden');
+  // повертаємо кнопку
+  const btn=document.getElementById('btn-escape');
+  btn.style.opacity='1';
+  btn.style.pointerEvents='auto';
+  moveEscBtn();
+}
+
+function updateEscCounter(){
+  const el=document.getElementById('esc-counter');
+  el.classList.remove('hidden');
+  el.textContent='🏃 '+escCount+' / '+MAX_ESC;
+}
+
+function checkMilestone(){
+  const txt=MILESTONES[escCount];if(!txt)return;
+  const el=document.getElementById('esc-milestone');
+  el.classList.remove('hidden');
+  el.style.animation='none';void el.offsetWidth;el.style.animation='';
+  el.textContent=txt;
+}
+
+function moveEscBtn(){
+  const btn=document.getElementById('btn-escape');
+  const bw=btn.offsetWidth,bh=btn.offsetHeight,pad=16;
+  const cx=parseFloat(btn.style.left)||window.innerWidth/2;
+  const cy=parseFloat(btn.style.top) ||window.innerHeight/2;
+  let nx,ny,tries=0;
+  do{
+    nx=pad+Math.random()*(window.innerWidth -bw-pad*2);
+    ny=pad+Math.random()*(window.innerHeight-bh-pad*2);
+    tries++;
+  }while(tries<14&&Math.hypot(nx-cx,ny-cy)<90);
+  btn.style.left=Math.round(nx)+'px';
+  btn.style.top =Math.round(ny)+'px';
+}
+
+function achieveDone(){
+  escPhase='done';sFanfare();spawnConfetti(40);
+  const btn=document.getElementById('btn-escape');
+  btn.style.opacity='0';
+  setTimeout(()=>btn.classList.add('hidden'),300);
+  const modal=document.getElementById('achieve-modal');
+  modal.classList.remove('hidden');
+  let cd=3;
+  const cdEl=document.getElementById('achieve-cd');
+  const t=setInterval(()=>{cd--;if(cd<=0){clearInterval(t);modal.classList.add('hidden');showQuiz();}else cdEl.textContent='переходимо за '+cd+'…';},1000);
+}
+
+/* ══ QUIZ ════════════════════════════════════ */
+const QUIZ_COMMENTS={
+  oleg:   'ти б хотів, щоб у нього був найдовший, але ні 😏',
+  vlad:   'навіть близько нема 🙈',
+  danya:  'ха, серйозно? 😂',
+  andriy: 'зовсім не в тему 🙅',
+  vitalik:'теж ні, але сьогодні твій день 🥳',
+};
+const quizClicked=new Set();
+
+function showQuiz(){
+  document.getElementById('btn-escape').classList.add('hidden');
+  showScreen('screen-quiz');
+}
+
+function quizClick(el,name){
+  if(quizClicked.has(name))return;
+  quizClicked.add(name);
+  sBuzz();
+  el.classList.add('wrong','do-shake');
+  el.querySelector('.opt-icon').textContent='❌';
+  const label=el.querySelector('.opt-label');
+  const c=document.createElement('span');
+  c.className='opt-comment';
+  c.textContent=QUIZ_COMMENTS[name]||'';
+  label.appendChild(c);
+  el.addEventListener('animationend',()=>el.classList.remove('do-shake'),{once:true});
+  // останній варіант — даємо 2.2 сек щоб прочитати коментар
+  if(quizClicked.size===5) setTimeout(showFinal,2200);
+}
+
+/* ══ FINAL — ПОСЛІДОВНІСТЬ ═══════════════════
+   1. quiz-q ховається
+   2. final-box зʼявляється
+   3. ДРУКУЄМО лірику (~2с)
+   4. пауза 500мс
+   5. перекреслення (700мс transition)
+   6. пауза 600мс → основна фраза зʼявляється
+   7. пауза 400мс → картка + конфеті + звук
+════════════════════════════════════════════ */
+const LYRIC = '…в єтам мірє тот главнєй,\nу каво пісюн дліннєй…';
+
+function showFinal(){
+  const q=document.getElementById('quiz-q');
+  q.style.transition='opacity .32s ease';
+  q.style.opacity='0';
+  setTimeout(()=>{
+    q.style.display='none';
+    document.getElementById('final-box').style.display='block';
+    // стартуємо typewriter через 200мс після появи блоку
+    setTimeout(startTypewriter,200);
+  },340);
+}
+
+function startTypewriter(){
+  const el=document.getElementById('lyric-text');
+  const cursor=document.getElementById('lyric-cursor');
+  let i=0;
+  const chars=LYRIC.split('');
+
+  // скидаємо вміст, ставимо тільки курсор
+  el.innerHTML='';
+  el.appendChild(cursor);
+  cursor.classList.remove('gone');
+
+  const interval=setInterval(()=>{
+    if(i>=chars.length){
+      clearInterval(interval);
+      // зупиняємо курсор, потім перекреслюємо
+      setTimeout(()=>{
+        cursor.classList.add('gone');
+        el.classList.add('strike');
+        // після перекреслення — основна фраза
+        setTimeout(()=>{
+          document.getElementById('main-phrase').classList.add('show');
+          document.getElementById('final-reveal').classList.add('show');
+          // картка + конфеті
+          setTimeout(()=>{
+            document.getElementById('final-card-wrap').classList.add('pop');
+            sBig(); spawnConfetti(72);
+          },700);
+        },900);
+      },500);
+      return;
+    }
+    // вставляємо символ перед курсором
+    const ch=chars[i];
+    if(ch==='\n'){
+      const br=document.createElement('br');
+      el.insertBefore(br,cursor);
+    } else {
+      const t=document.createTextNode(ch);
+      el.insertBefore(t,cursor);
+    }
+    i++;
+  }, 42); // швидкість друку: ~42мс/символ
+}
+
+/* ══ COPY LINK ═══════════════════════════════ */
+function copyLink(){
+  const text=document.getElementById('link-text').textContent;
+  const hint=document.getElementById('copy-hint');
+  const box =document.getElementById('link-box');
+  function ok(){
+    hint.innerHTML='<span class="copy-ok">✓ Скопійовано!</span>';
+    box.style.borderStyle='solid';box.style.borderColor='var(--ok)';
+    setTimeout(()=>{hint.textContent='тицяй, щоб скопіювати';box.style.borderStyle='';box.style.borderColor='';},2400);
+  }
+  if(navigator.clipboard){navigator.clipboard.writeText(text).then(ok).catch(()=>fbCopy(text,ok));}
+  else fbCopy(text,ok);
+}
+function fbCopy(t,cb){
+  const ta=document.createElement('textarea');
+  ta.value=t;ta.style.cssText='position:fixed;left:-9999px;top:-9999px;opacity:0;font-size:16px';
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{if(document.execCommand('copy'))cb();}catch(e){}
+  document.body.removeChild(ta);
+}
+
+/* ══ CONFETTI ════════════════════════════════ */
+function spawnConfetti(n){
+  const root=document.getElementById('confetti');
+  const colors=['#CF6B4A','#E8906D','#FFD166','#EF476F','#06D6A0','#118AB2','#FFA552','#C77DFF'];
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='cp';
+      const sz=7+Math.random()*9,dur=2+Math.random()*2.2;
+      el.style.cssText=[
+        'left:'+(Math.random()*100)+'vw','top:-24px',
+        'width:'+sz+'px','height:'+(sz*(Math.random()>.4?1:1.8))+'px',
+        'background:'+colors[~~(Math.random()*colors.length)],
+        'border-radius:'+(Math.random()>.45?'50%':'3px'),
+        'animation-duration:'+dur+'s',
+        'animation-delay:'+Math.random()*.5+'s',
+      ].join(';');
+      root.appendChild(el);
+      setTimeout(()=>el.remove(),(dur+.8)*1000);
+    },i*22);
+  }
+}
+
+/* ══ SCREEN SWITCH ═══════════════════════════ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+}
+</script>
+</body>
+</html>
