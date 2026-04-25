@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk" style="color-scheme: light dark;">
 <head>
   <meta charset="UTF-8">
@@ -10,7 +10,7 @@
   <meta property="og:title"       content="🎁 Тут щось є для тебе…">
   <meta property="og:description" content="Відкрий і дізнаєшся від кого і що.">
   <meta property="og:type"        content="website">
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Unbounded:wght@400;700;900&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     /* ══ TOKENS ══════════════════════════════ */
@@ -70,6 +70,7 @@
       justify-content:center; text-align:center;
     }
     .screen.active { display:flex; animation:fadeUp .42s cubic-bezier(.22,1,.36,1) both; }
+    .screen > * { position:relative; z-index:150; }
     @keyframes fadeUp {
       from{opacity:0;transform:translateY(18px);}
       to{opacity:1;transform:translateY(0);}
@@ -113,6 +114,27 @@
       line-height:1.65; color:var(--text-b); max-width:360px;
     }
     strong { color:var(--text-h); }
+
+    .card-title-handwritten {
+      font-family:'Caveat','Patrick Hand','Comic Sans MS',cursive;
+      font-size:clamp(34px,11vw,62px); font-weight:700;
+      line-height:.95; color:#D9784D; letter-spacing:.01em;
+      transform:rotate(-1deg); margin:0 0 18px;
+      text-shadow:0 1px 0 rgba(255,255,255,.65), 0 0 1px rgba(207,107,74,.38);
+    }
+    .card-title-handwritten .stolen-space {
+      display:inline-block; min-width:.34em;
+    }
+    .card-title-handwritten .letter-return {
+      display:inline-block;
+      animation:letterReturn .72s cubic-bezier(.18,1.45,.35,1) both;
+    }
+    .handwritten-caption {
+      font-family:'Caveat','Patrick Hand','Comic Sans MS',cursive;
+      color:#CF6B4A; font-size:clamp(22px,6.5vw,34px);
+      font-weight:700; line-height:1; transform:rotate(-1deg);
+      text-shadow:0 1px 0 rgba(255,255,255,.55);
+    }
 
     /* ══ BUTTONS ══════════════════════════════ */
     .btn {
@@ -158,6 +180,7 @@
       font-size:13px; font-weight:700; color:#E05050;
       margin-top:10px; min-height:18px;
     }
+    #screen-name .name-card { position:relative; z-index:2; }
 
     /* ══ SCREEN 1 — WELCOME ════════════════════ */
     .timer-pill {
@@ -306,7 +329,8 @@
     .link-box {
       background:var(--surface-2); border:2px dashed var(--terra);
       border-radius:12px; padding:14px 15px; display:flex;
-      align-items:center; gap:10px; cursor:pointer; text-align:left;
+      align-items:center; justify-content:center; gap:10px;
+      cursor:pointer; text-align:center;
       margin:14px 0 7px;
       transition:background .18s,transform .1s,border-color .2s;
     }
@@ -315,15 +339,28 @@
     .link-icon { font-size:18px; flex-shrink:0; }
     .link-text {
       font-family:'Unbounded',sans-serif;
-      font-size:clamp(9px,2.4vw,11px); color:var(--text-lnk);
-      word-break:break-all; flex:1; line-height:1.5;
+      font-size:clamp(10px,2.8vw,13px); color:var(--text-lnk);
+      flex:1; line-height:1.5; font-weight:700;
+    }
+    .link-sub {
+      font-size:clamp(9px,2.2vw,11px); color:var(--text-m);
+      font-weight:600; margin-top:2px;
     }
     .copy-hint { font-size:12px; font-weight:600; color:var(--text-m); }
     .copy-ok   { color:var(--ok); }
 
+    /* фінальна картка — клікабельна */
+    a.final-card-sm {
+      display:flex; text-decoration:none; cursor:pointer;
+    }
+    a.final-card-sm:hover { opacity:.9; }
+    a.final-card-sm:active { transform:scale(.97); }
+    .final-goose-caption { margin:12px 0 0; }
+
     /* фінальна картка */
     .final-card-wrap {
-      margin-top:26px; opacity:0;
+      margin-top:26px; opacity:0; position:relative;
+      width:fit-content; margin-left:auto; margin-right:auto;
       transform:scale(.65) rotate(-7deg) translateY(24px);
       transition:opacity .6s cubic-bezier(.22,1,.36,1),
                  transform .6s cubic-bezier(.22,1,.36,1);
@@ -347,9 +384,178 @@
       border-radius:50%; transform:rotate(20deg);
     }
     .final-card-sm svg,.fc-label { position:relative; z-index:1; }
+    .final-card-goose {
+      position:absolute; z-index:3; top:50%;
+      width:clamp(60px,13vw,90px); height:auto;
+      pointer-events:none;
+    }
+    .final-card-goose.emoji-fallback {
+      width:auto; font-size:clamp(52px,12vw,80px); line-height:1;
+      filter:drop-shadow(0 4px 10px rgba(87,52,34,.22));
+    }
+    .final-card-goose img {
+      width:clamp(55px,12vw,85px);
+      height:auto;
+      display:block;
+      filter:drop-shadow(0 4px 10px rgba(87,52,34,.22));
+    }
+    .final-card-goose.left {
+      right:100%; margin-right:-6px;
+      transform:translateY(-50%) rotate(-8deg);
+    }
+    .final-card-goose.right {
+      left:100%; margin-left:-6px;
+      transform:translateY(-50%) scaleX(-1) rotate(-8deg);
+    }
     .fc-label {
       font-family:'Unbounded',sans-serif; font-size:clamp(9px,2.4vw,12px);
       font-weight:700; color:rgba(255,255,255,.92); letter-spacing:.04em;
+    }
+
+    /* ══ GOOSE THEME ══════════════════════════ */
+    #goose-layer {
+      position:fixed; inset:0; pointer-events:none; z-index:120;
+      overflow:hidden; contain:layout paint;
+    }
+    .goose-piece {
+      position:absolute; left:var(--x,0); top:var(--y,0);
+      width:var(--goose-size,140px); transform-origin:center bottom;
+      pointer-events:none; will-change:transform,opacity;
+    }
+    .goose-piece img {
+      display:block; width:100%; height:auto;
+      filter:drop-shadow(0 12px 18px rgba(87,52,34,.16));
+    }
+    .goose-emoji {
+      font-size:calc(var(--goose-size,120px) * .62);
+      line-height:1; text-align:center;
+      filter:drop-shadow(0 8px 12px rgba(87,52,34,.18));
+    }
+    .goose-static { animation:goosePop .36s cubic-bezier(.22,1,.36,1) both, gooseFloat 3.8s ease-in-out .36s infinite; }
+    .goose-walk { left:-190px; top:auto; bottom:var(--bottom,24px); animation:gooseWalkAcross var(--duration,5.2s) linear forwards; }
+    .goose-steal { animation:gooseSteal var(--duration,1.7s) cubic-bezier(.2,.8,.2,1) forwards; }
+    .goose-deliver { animation:gooseDeliver var(--duration,2.1s) cubic-bezier(.2,.8,.2,1) forwards; }
+    .goose-hiccup { animation:gooseHiccup .34s ease both; }
+
+    /* ── steal unit: goose+letter as one element ── */
+    .steal-unit {
+      position:absolute; left:0; display:flex; align-items:center;
+      pointer-events:none; z-index:121;
+      animation:stealUnitSlide var(--duration,2.2s) cubic-bezier(.25,.46,.45,.94) forwards;
+      will-change:transform,opacity;
+    }
+    .steal-unit img {
+      height:clamp(70px,14vw,110px);
+      width:auto;
+      display:block;
+      filter:drop-shadow(0 4px 8px rgba(87,52,34,.25));
+    }
+    .steal-goose { font-size:clamp(52px,11vw,84px); line-height:1; display:block; }
+    .steal-letter-char {
+      font-family:'Caveat','Patrick Hand',cursive;
+      font-size:clamp(34px,8vw,60px); font-weight:700;
+      color:#D9784D; display:block; margin-left:-10px;
+      transform:translateY(-6px);
+      text-shadow:0 2px 0 rgba(255,255,255,.75);
+    }
+    @keyframes stealUnitSlide {
+      0%   { opacity:0; transform:translateX(-60px); }
+      8%   { opacity:1; }
+      90%  { opacity:1; }
+      100% { opacity:0; transform:translateX(110vw); }
+    }
+
+    /* ── escape goose: always emoji, tracks button target position ── */
+    .escape-goose {
+      position:fixed; z-index:190;
+      width:clamp(78px,15vw,118px); height:auto;
+      pointer-events:none; opacity:0; display:block;
+      transform:translate(-96%, -50%);
+      transition:left .26s cubic-bezier(.175,.885,.32,1.35),
+                 top  .26s cubic-bezier(.175,.885,.32,1.35),
+                 opacity .18s ease;
+      will-change:left,top,opacity;
+    }
+    .escape-goose img {
+      width:100%;
+      height:auto;
+      display:block;
+      filter:drop-shadow(0 6px 14px rgba(87,52,34,.2));
+    }
+    .escape-goose.emoji-fallback {
+      width:auto; font-size:clamp(36px,8vw,52px); line-height:1;
+    }
+    .escape-goose.active { opacity:1; }
+    .escape-goose.tug { transform:translate(-80%, -50%) rotate(12deg) scale(1.1); transition:transform .12s ease; }
+    .goose-bubble {
+      position:absolute; right:2px; top:-8px;
+      background:var(--surface); border:2px solid var(--border);
+      border-radius:999px; padding:4px 9px;
+      color:var(--terra); font-weight:900; font-size:13px;
+      box-shadow:0 8px 20px rgba(87,52,34,.12);
+      animation:goosePop .2s ease both;
+    }
+    .goose-floating-letter {
+      position:absolute; left:var(--x,50vw); top:var(--y,40vh);
+      font-family:'Caveat','Patrick Hand',cursive;
+      font-size:clamp(42px,12vw,74px); font-weight:700;
+      color:#D9784D; text-shadow:0 2px 0 rgba(255,255,255,.7);
+      animation:letterWobble var(--duration,1.9s) ease-in-out forwards;
+      will-change:transform,opacity;
+    }
+    @keyframes gooseWalkAcross {
+      0%{opacity:0;transform:translateX(0) translateY(8px) rotate(-1deg);}
+      8%,88%{opacity:1;}
+      45%{transform:translateX(55vw) translateY(-5px) rotate(1deg);}
+      100%{opacity:0;transform:translateX(calc(100vw + 240px)) translateY(4px) rotate(0deg);}
+    }
+    @keyframes gooseSteal {
+      0%{opacity:0;transform:translate3d(-22vw,18px,0) rotate(-2deg);}
+      12%,82%{opacity:1;}
+      55%{transform:translate3d(46vw,-4px,0) rotate(1deg);}
+      100%{opacity:0;transform:translate3d(calc(100vw + 220px),10px,0) rotate(2deg);}
+    }
+    @keyframes gooseDeliver {
+      0%{opacity:0;transform:translate3d(70vw,20px,0) rotate(2deg) scale(.95);}
+      18%,86%{opacity:1;}
+      58%{transform:translate3d(12vw,-8px,0) rotate(-1deg) scale(1);}
+      100%{opacity:0;transform:translate3d(-18vw,6px,0) rotate(-2deg) scale(.98);}
+    }
+    @keyframes letterWobble {
+      0%{opacity:0;transform:translate3d(0,0,0) rotate(-7deg) scale(.85);}
+      12%,82%{opacity:1;}
+      38%{transform:translate3d(36px,-18px,0) rotate(8deg) scale(1.08);}
+      100%{opacity:0;transform:translate3d(230px,-40px,0) rotate(18deg) scale(.72);}
+    }
+    @keyframes letterReturn {
+      0%{opacity:0;transform:translate3d(150px,-34px,0) rotate(18deg) scale(.45);}
+      62%{opacity:1;transform:translate3d(-7px,4px,0) rotate(-7deg) scale(1.18);}
+      100%{opacity:1;transform:translate3d(0,0,0) rotate(0deg) scale(1);}
+    }
+    @keyframes goosePop {
+      from{opacity:0;transform:translateY(8px) scale(.86);}
+      to{opacity:1;transform:translateY(0) scale(1);}
+    }
+    @keyframes gooseFloat {
+      0%,100%{transform:translateY(0) rotate(-1deg);}
+      50%{transform:translateY(-6px) rotate(1deg);}
+    }
+    @keyframes gooseHiccup {
+      0%,100%{transform:translateY(0) rotate(0deg);}
+      35%{transform:translateY(-13px) rotate(-5deg);}
+      70%{transform:translateY(4px) rotate(4deg);}
+    }
+    @media (max-width:520px) {
+      .goose-piece { width:var(--goose-size,108px); }
+      .escape-goose { width:112px; transform:translate(-80%, -40%) rotate(-2deg); }
+      .escape-goose.tug { transform:translate(-80%, -40%) rotate(4deg) translateY(-4px); }
+      .goose-walk { left:-140px; bottom:var(--bottom,14px); }
+      .final-card-goose { width:clamp(60px,18vw,76px); }
+      .final-card-goose img { width:clamp(55px,17vw,72px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .goose-walk,.goose-steal,.goose-deliver,.goose-floating-letter { animation:none !important; opacity:0; }
+      .goose-static { animation:goosePop .2s ease both; }
     }
 
     /* ══ MODALS ═══════════════════════════════ */
@@ -403,6 +609,9 @@
 <div class="screen" id="screen-welcome">
   <div class="timer-pill" id="timer-pill">
     ⏳ Подарунок зникне через&nbsp;<span id="timer-val">1:00</span>
+  </div>
+  <div class="card-title-handwritten" id="birthday-handwritten">
+    З <span class="stealable-letter">Д</span>нем Народження!
   </div>
   <div class="gift-card">
     <svg width="72" height="72" viewBox="0 0 80 80" fill="none" style="position:relative;z-index:1">
@@ -486,14 +695,23 @@
       <div class="divider"></div>
       <p><strong>Тримай свою підписку на Клод від пацанів:</strong></p>
 
-      <div class="link-box" onclick="copyLink()" id="link-box">
-        <span class="link-icon">🔗</span>
-        <span class="link-text" id="link-text">ВСТАВ_СЮДИ_ПОСИЛАННЯ</span>
+      <div class="link-box" onclick="copyLink()" id="link-box"
+           data-url="https://claude.ai/gift/redeem?code=76b579b3-9724-413a-8472-fe321c205582">
+        <span class="link-icon">🎁</span>
+        <span>
+          <div class="link-text" id="link-text">1 рік Claude Pro</div>
+          <div class="link-sub">натисни, щоб скопіювати код активації</div>
+        </span>
       </div>
-      <div class="copy-hint" id="copy-hint">тицяй, щоб скопіювати</div>
+      <div class="copy-hint" id="copy-hint"></div>
+      <div class="handwritten-caption final-goose-caption">Гуси доставили подарунок.</div>
 
       <div class="final-card-wrap" id="final-card-wrap">
-        <div class="final-card-sm">
+        <span class="final-card-goose left" aria-hidden="true"><img src="assets/goose-with-link.png" alt="" onerror="this.parentElement.classList.add('emoji-fallback');this.remove();this.parentElement.textContent='🪿';"></span>
+        <span class="final-card-goose right" aria-hidden="true"><img src="assets/goose-with-link.png" alt="" onerror="this.parentElement.classList.add('emoji-fallback');this.remove();this.parentElement.textContent='🪿';"></span>
+        <a class="final-card-sm" id="final-card-link"
+           href="https://claude.ai/gift/redeem?code=76b579b3-9724-413a-8472-fe321c205582"
+           target="_blank" rel="noopener">
           <svg width="54" height="54" viewBox="0 0 80 80" fill="none" style="position:relative;z-index:1">
             <rect x="11" y="36" width="58" height="37" rx="2" fill="white"/>
             <rect x="7"  y="26" width="66" height="13" rx="2" fill="white"/>
@@ -505,7 +723,7 @@
             <rect x="7"  y="26" width="66" height="13" rx="2" stroke="#222" stroke-width="2" fill="none"/>
           </svg>
           <div class="fc-label">1 year of Claude Pro</div>
-        </div>
+        </a>
       </div>
       </div><!-- /final-reveal -->
     </div>
@@ -533,6 +751,7 @@
   </div>
 </div>
 
+<div id="goose-layer" aria-hidden="true"></div>
 <div id="confetti"></div>
 
 <script>
@@ -560,6 +779,204 @@ function sFanfare(){
 function sBig(){
   [[523,0],[659,.08],[784,.16],[1047,.26],[1319,.38],[1047,.5],[1319,.62]].forEach(([f,d])=>
     tone(f,'triangle',.45,.22,d));
+}
+
+/* ══ GOOSE HELPERS ═══════════════════════════ */
+const GOOSE_ASSETS={
+  walking:'assets/goose-walking.png',
+  lying:'assets/goose-lying.png',
+  letter:'assets/goose-letter-d.png',
+  link:'assets/goose-with-link.png'
+};
+const gooseReduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let welcomeGoosePlayed=false;
+
+function gooseRoot(){return document.getElementById('goose-layer');}
+function clearGooseLayer(){
+  const root=gooseRoot(); if(root) root.innerHTML='';
+}
+function spawnGoose(type='walking',options={}){
+  const root=gooseRoot(); if(!root) return null;
+  const el=document.createElement('div');
+  el.className='goose-piece '+(options.className||'');
+  el.style.setProperty('--goose-size',options.size||'140px');
+  el.style.setProperty('--duration',(options.duration||1.8)+'s');
+  if(options.x) el.style.setProperty('--x',options.x);
+  if(options.y) el.style.setProperty('--y',options.y);
+  if(options.bottom) el.style.setProperty('--bottom',options.bottom);
+
+  const img=document.createElement('img');
+  img.src=GOOSE_ASSETS[type]||GOOSE_ASSETS.walking;
+  img.alt='';
+  img.onerror=()=>{
+    img.remove();
+    el.classList.add('goose-emoji');
+    el.textContent=options.emoji||'🪿';
+  };
+  el.appendChild(img);
+
+  if(options.bubble){
+    const bubble=document.createElement('span');
+    bubble.className='goose-bubble';
+    bubble.textContent=options.bubble;
+    el.appendChild(bubble);
+  }
+
+  root.appendChild(el);
+  if(!options.persist) setTimeout(()=>el.remove(),((options.duration||1.8)+.45)*1000);
+  return el;
+}
+function gooseWalk(options={}){
+  if(gooseReduceMotion) return null;
+  return spawnGoose(options.type||'walking',{
+    className:'goose-walk '+(options.className||''),
+    size:options.size||'170px',
+    bottom:options.bottom||'18px',
+    duration:options.duration||5.2
+  });
+}
+function stealLetterFromElement(selector,letter,options){
+  letter=letter||'Д'; options=options||{};
+  if(gooseReduceMotion) return;
+  const target=document.querySelector(selector);
+  const root=gooseRoot();
+  if(!target||!root) return;
+
+  const rect=target.getBoundingClientRect();
+  let stolen=letter;
+  let restore=function(){};
+  const marked=target.querySelector('.stealable-letter');
+
+  if(marked){
+    stolen=marked.textContent||letter;
+    marked.textContent=' ';
+    marked.classList.remove('letter-return');
+    marked.classList.add('stolen-space');
+    restore=function(){
+      marked.textContent=stolen;
+      marked.classList.remove('stolen-space');
+      marked.classList.add('letter-return');
+      marked.addEventListener('animationend',function(){marked.classList.remove('letter-return');},{once:true});
+    };
+  }
+
+  /* Single composite unit: goose emoji + letter animate together */
+  const dur=options.duration||2.2;
+  const unit=document.createElement('div');
+  unit.className='steal-unit';
+  unit.style.top=Math.max(4,rect.top-14)+'px';
+  unit.style.setProperty('--duration',dur+'s');
+  const img=document.createElement('img');
+  img.src=GOOSE_ASSETS.letter;
+  img.alt='';
+  img.onerror=function(){
+    img.remove();
+    const goose=document.createElement('span');
+    goose.className='steal-goose';
+    goose.textContent='🪿';
+    const char=document.createElement('span');
+    char.className='steal-letter-char';
+    char.textContent=stolen.toUpperCase();
+    unit.appendChild(goose);
+    unit.appendChild(char);
+  };
+  unit.appendChild(img);
+  root.appendChild(unit);
+
+  setTimeout(function(){unit.remove();},(dur+0.3)*1000);
+  setTimeout(restore,options.holdMs||4500);
+}
+function gooseStealLetter(selector,letter,options){
+  return stealLetterFromElement(selector,letter||'Д',options||{});
+}
+function ensureEscapeGoose(){
+  let g=document.getElementById('escape-goose');
+  if(g) return g;
+  const root=gooseRoot(); if(!root) return null;
+  g=document.createElement('div');
+  g.id='escape-goose';
+  g.className='escape-goose';
+  const img=document.createElement('img');
+  img.src=GOOSE_ASSETS.walking;
+  img.alt='';
+  img.onerror=function(){
+    img.remove();
+    g.classList.add('emoji-fallback');
+    g.textContent='🪿';
+  };
+  g.appendChild(img);
+  root.appendChild(g);
+  return g;
+}
+function positionEscapeGoose(btn){
+  const g=ensureEscapeGoose();
+  if(!g||!btn||btn.classList.contains('hidden')) return;
+  /* Use style.left/top (the TARGET coords set by moveEscBtn),
+     not getBoundingClientRect which returns the pre-transition visual position */
+  const nx=parseFloat(btn.style.left)||(window.innerWidth -btn.offsetWidth)/2;
+  const ny=parseFloat(btn.style.top) ||(window.innerHeight-btn.offsetHeight)/2;
+  g.style.left=Math.round(nx)+'px';
+  g.style.top =Math.round(ny+btn.offsetHeight/2)+'px';
+  g.classList.add('active');
+  clearTimeout(g._tugTimer);
+  g.classList.add('tug');
+  g._tugTimer=setTimeout(()=>g.classList.remove('tug'),220);
+}
+function hideEscapeGoose(){
+  const g=document.getElementById('escape-goose');
+  if(g) g.classList.remove('active','tug');
+}
+function gooseReact(options={}){
+  const active=document.querySelector('.screen.active');
+  if(!active) return;
+  const rect=(options.near||active).getBoundingClientRect();
+  const size=window.innerWidth<520?'96px':'125px';
+  const x=Math.min(window.innerWidth-120,Math.max(12,rect.right-112))+'px';
+  const y=Math.min(window.innerHeight-120,Math.max(18,rect.top+rect.height*.45))+'px';
+  const g=spawnGoose(options.type||'walking',{
+    className:'goose-static '+(options.className||''),
+    x:options.x||x,
+    y:options.y||y,
+    size:options.size||size,
+    duration:options.duration||1.5,
+    bubble:options.bubble
+  });
+  if(g&&options.className==='goose-hiccup') setTimeout(()=>g.remove(),900);
+}
+function triggerGooseForScreen(screenId){
+  clearGooseLayer();
+  const small=window.innerWidth<520;
+  if(screenId==='screen-name'){
+    spawnGoose('lying',{
+      className:'goose-static',
+      x:small?'calc(100vw - 116px)':'calc(100vw - 190px)',
+      y:small?'calc(100vh - 120px)':'calc(100vh - 170px)',
+      size:small?'104px':'170px',
+      persist:true
+    });
+  }
+  if(screenId==='screen-welcome'){
+    spawnGoose('lying',{
+      className:'goose-static',
+      x:small?'calc(100vw - 122px)':'calc(100vw - 205px)',
+      y:small?'calc(100vh - 128px)':'calc(100vh - 176px)',
+      size:small?'112px':'180px',
+      persist:true
+    });
+    if(!welcomeGoosePlayed){
+      welcomeGoosePlayed=true;
+      setTimeout(()=>stealLetterFromElement('#birthday-handwritten','Д',{
+        duration:2.35,
+        holdMs:5000,
+        noFloating:true,
+        size:small?'138px':'178px',
+        gooseX:small?-112:-160
+      }),900);
+    }
+  }
+  if(screenId==='screen-escape'){
+    setTimeout(()=>positionEscapeGoose(document.getElementById('btn-escape')),520);
+  }
 }
 
 /* ══ NAME CHECK ══════════════════════════════ */
@@ -614,6 +1031,7 @@ function startEscape(){
     const bw=btn.offsetWidth,bh=btn.offsetHeight;
     btn.style.left=Math.round((window.innerWidth-bw)/2)+'px';
     btn.style.top =Math.round((window.innerHeight-bh)/2)+'px';
+    requestAnimationFrame(()=>positionEscapeGoose(btn));
   });
 }
 
@@ -627,6 +1045,7 @@ function escapeClick(){
     // ховаємо кнопку повністю під час показу вибору
     escPhase='choice';
     const btn=document.getElementById('btn-escape');
+    hideEscapeGoose();
     btn.style.opacity='0';
     btn.style.pointerEvents='none';
     document.getElementById('esc-hint').classList.add('hidden');
@@ -644,6 +1063,7 @@ function escapeClick(){
 
 function escapeEasy(){
   document.getElementById('btn-escape').classList.add('hidden');
+  hideEscapeGoose();
   showQuiz();
 }
 
@@ -687,12 +1107,14 @@ function moveEscBtn(){
   }while(tries<14&&Math.hypot(nx-cx,ny-cy)<90);
   btn.style.left=Math.round(nx)+'px';
   btn.style.top =Math.round(ny)+'px';
+  positionEscapeGoose(btn);
 }
 
 function achieveDone(){
   escPhase='done';sFanfare();spawnConfetti(40);
   const btn=document.getElementById('btn-escape');
   btn.style.opacity='0';
+  hideEscapeGoose();
   setTimeout(()=>btn.classList.add('hidden'),300);
   const modal=document.getElementById('achieve-modal');
   modal.classList.remove('hidden');
@@ -801,13 +1223,13 @@ function startTypewriter(){
 
 /* ══ COPY LINK ═══════════════════════════════ */
 function copyLink(){
-  const text=document.getElementById('link-text').textContent;
-  const hint=document.getElementById('copy-hint');
   const box =document.getElementById('link-box');
+  const text=box.dataset.url||document.getElementById('link-text').textContent;
+  const hint=document.getElementById('copy-hint');
   function ok(){
     hint.innerHTML='<span class="copy-ok">✓ Скопійовано!</span>';
     box.style.borderStyle='solid';box.style.borderColor='var(--ok)';
-    setTimeout(()=>{hint.textContent='тицяй, щоб скопіювати';box.style.borderStyle='';box.style.borderColor='';},2400);
+    setTimeout(()=>{hint.textContent='';box.style.borderStyle='';box.style.borderColor='';},2400);
   }
   if(navigator.clipboard){navigator.clipboard.writeText(text).then(ok).catch(()=>fbCopy(text,ok));}
   else fbCopy(text,ok);
@@ -847,7 +1269,9 @@ function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
+  triggerGooseForScreen(id);
 }
+triggerGooseForScreen('screen-name');
 </script>
 </body>
 </html>
